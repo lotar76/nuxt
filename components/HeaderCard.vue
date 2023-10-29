@@ -31,17 +31,18 @@
       </svg>
 
     </div>
-    <div class="header-card__marka  " :style="{
-    backgroundImage:`url(../assets/images/${info.image})`}">
-
+    <div class="header-card__marka"
+          :style="{backgroundImage:`url(/images/${info.image})`}"
+    >
+<!--      :style="{backgroundImage:`url('/images/1.png)`}"-->
     </div>
     <div class="header-card__date" @click="share">
       {{ info.subtitle }}
     </div>
     <div style="position: relative">
-      <div class="header-card__title" >
+      <div class="header-card__title">
         {{ info.title }}
-        <div class="header-card__share" >
+        <div class="header-card__share">
           <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="54" height="54" rx="27" fill="#4F4946" fill-opacity="0.05"/>
             <circle cx="27" cy="27" r="26.5" stroke="#4F4946" stroke-opacity="0.15"/>
@@ -67,6 +68,8 @@ import {useRouter} from "nuxt/app";
 // import router from "../router";
 const router = useRouter()
 
+
+
 const emit = defineEmits(['share'])
 
 function share():void {
@@ -89,6 +92,8 @@ const props = defineProps({
     }
   }
 })
+const imgP = `images/${props['info'].image}`;
+
 </script>
 
 <style scoped lang="scss">

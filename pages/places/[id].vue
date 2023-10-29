@@ -19,17 +19,27 @@
 
 // import DialogForm from "#build/components/Dialog.vue";
 
+
+
+import {env} from "unenv";
+
 definePageMeta({
   layout: 'empty'
 })
 
-import {useRoute} from "nuxt/app";
+import {useRoute, useRouter, useRuntimeConfig} from "nuxt/app";
 import {computed} from "@vue/reactivity";
 import {HeaderCard,DialogForm} from "#components"
 
-const Url_base = 'http://localhost:3001/';
+// const Url_base =  window.location.protocol +'//'+ window.location.host+'/';
 
+const config = useRuntimeConfig()
 const route = useRoute()
+const { currentRoute } = useRouter();
+
+// const Url_base = config.base_url
+const Url_base = 'https://inkstagram.ru'
+
 
 
 const placeId = route.params.id
@@ -132,7 +142,7 @@ const items: any[] = [
       share_text: 'Heute habe ich mit Kate die musikalische Hauptstadt Europas besucht, die Stadt Leipzig. Es war etwas Besonderes. Hier möchte ich einige Eindrücke teilen.',
       subtitle: "24 Oktober, Leipziger",
       text: ' Heute habe ich mit <a target="_blank" href="https://www.facebook.com/profile.php?id=100020893964935">Kate</a> die musikalische Hauptstadt Europas besucht, die Stadt Leipzig. Hier lebte Johann Sebastian Bach mehr als zwanzig Jahre lang, schuf Musik und arbeitete mit dem Knabenchor der Kirche, hier gibt es seit 1904 ein Musikfest ihm zu Ehren, hier lebte und arbeitete der Autor des Hochzeitsmarsches Mendelssohn, hier komponierten Wagner und Schumann.',
-      image: 'main-min.jpg',
+      image: 'main-min-sm.jpg',
       share_btn: 'Teilen',
       share_title: 'Teilen Sie Ihre Reise mit Ihren Lieben'
     },
@@ -536,42 +546,43 @@ let place: any = computed(() => {
   return items.filter((item) => item.id === placeId)[0]
 })
 const share_text = place.value.info.share_text
-const image_url = Url_base + 'images/' + place.value.info.image;
+
+const image_url = Url_base + '/images/' + place.value.info.image;
+const page_url = Url_base + route.fullPath;
 
 useHead(
     computed(() => {
       return {
-        title: place.value.info.title.length < 65 ? place.value.info.title : place.value.info.title.slice(0, 60) + '...',
+        title: place.value.info.title,
         meta: [
           {
             property: 'description',
-            content: place.value.info.share_text.length < 155 ? place.value.info.share_text : place.value.info.share_text.slice(0, 150) + '...',
+            content: place.value.info.share_text,
           },
           {
             property: 'og:title',
-            content: place.value.info.title.length < 65 ? place.value.info.title : place.value.info.title.slice(0, 60) + '...',
+            content: place.value.info.title,
           },
           {
             property: 'og:description',
-            content: place.value.info.share_text.length < 65 ? place.value.info.share_text : place.value.info.share_text.slice(0, 60) + '...',
+            content: place.value.info.share_text,
           },
           {
             property: 'og:image',
             content: image_url,
-            // content: Url_base+'forest.jpg',
           },
-          // {
-          //   property: 'og:image:width',
-          //   content:256,
-          // },
-          // {
-          //   property: 'og:image:height',
-          //   content:256,
-          // },
-          // {
-          //   property: 'og:url',
-          //   content: window.location.href,
-          // },
+          {
+            property: 'og:image:width',
+            content:256,
+          },
+          {
+            property: 'og:image:height',
+            content:256,
+          },
+          {
+            property: 'og:url',
+            content: page_url,
+          },
           {
             property: 'og:type',
             content: 'article',
@@ -592,10 +603,10 @@ useHead(
             name: 'twitter:image',
             content: image_url,
           },
-          // {
-          //   name: 'twitter:url',
-          //   content: window.location.href,
-          // },
+          {
+            name: 'twitter:url',
+            content: page_url,
+          },
 
         ]
       }
