@@ -1,12 +1,19 @@
-
 @import "./variables";
-@import "./fonts";
+//@import "./fonts";
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 :root {
+  position: relative;
+  max-width: 450px;
+  min-width: 375px;
+  margin: 0 auto;
+  padding: 0 ;
+  //border: 1px red solid;
+  min-height: 100vh;
+  //background-color: $background-color;
 
   background-color:$background-color;
 

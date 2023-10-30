@@ -1,22 +1,20 @@
 <template>
   <div class="dialog" v-if="showDialog">
-    <div class="dialog-content__close" @click.stop="closeDialog">
-      <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-            d="M19 6.91L17.59 5.5L12 11.09L6.41 5.5L5 6.91L10.59 12.5L5 18.09L6.41 19.5L12 13.91L17.59 19.5L19 18.09L13.41 12.5L19 6.91Z"
-            fill="white"/>
-      </svg>
-    </div>
+
     <div class="dialog-layout"/>
     <div class="dialog-content">
+      <div class="dialog-content__close" @click.stop="closeDialog">
+            <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                  d="M19 6.91L17.59 5.5L12 11.09L6.41 5.5L5 6.91L10.59 12.5L5 18.09L6.41 19.5L12 13.91L17.59 19.5L19 18.09L13.41 12.5L19 6.91Z"
+                  fill="black"/>
+            </svg>
 
+    </div>
       <div
           class="dialog-content__header"
-          :style="{
-        backgroundImage:`url(/images/${item.info.image})`
-          }"
+          :style="{backgroundImage:`url(/images/${item.info.image})`}"
       >
-
       </div>
       <div class="share-block">
         <div class="share-block-input">
@@ -48,7 +46,7 @@ export default {
 }
 </script>
 <script setup >
-import {defineEmits, defineProps, ref} from "vue";
+import {defineEmits, defineProps} from "vue";
 const props = defineProps({
   'showDialog': {
     type: Boolean,
@@ -76,11 +74,109 @@ function closeDialog(){
 </script>
 
 <style lang="scss">
+.share-block {
+  //border-bottom: 1px solid #cccccc;
+  //border-top: 1px solid #cccccc;
+  //width: 375px;
+  background-color: #f9f4ee;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 0 auto;
+
+
+  &__title {
+    font-family: Italianno, sans-serif;
+    font-size: 50px;
+    font-weight: 400;
+    line-height: 45px;
+    text-align: center;
+    margin-bottom: 15px;
+
+  }
+
+  .share-block-input {
+    color: #4F4946;
+    border-radius: 16px;
+    background: #F5F5F5;
+    padding: 15px 10px;
+    position: relative;
+    word-break: break-word;
+    max-height: 180px;
+    overflow: auto;
+
+    &__icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      opacity: 0.5;
+    }
+
+    &__title {
+      font-family: LibreBaskervilleRegular, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 17px;
+      text-align: left;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+
+    }
+
+    &__textarea {
+      font-family: Inter, serif;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 19px;
+      text-align: left;
+      min-width: 274px;
+
+
+    }
+  }
+
+  .share-btn {
+    border-radius: 16px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5637D;
+    color: white;
+    margin: 10px 0;
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+
+    :hover {
+      cursor: pointer;
+    }
+
+  }
+
+  .input-share {
+    font-family: Inter, serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 19px;
+    text-align: left;
+    background-color: #f9f4ee;
+    border: none;
+    width: 100%;
+
+  }
+
+}
+
 .dialog {
   width: 400px;
-  border: 1px red solid;
-
+  height: 80vh;
+  border: 1px red solid !important;
+  background-color: red !important;
   &-content {
+
     width: 90%;
     height: 80vh;
     overflow: hidden;
@@ -101,7 +197,7 @@ function closeDialog(){
       position: absolute;
       right: 15px;
       top: 15px;
-      z-index: 10;
+      z-index: 11;
     }
 
     &__header {

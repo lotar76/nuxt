@@ -1,43 +1,87 @@
 <template>
- <div class="">
-     <header-card
-         @share="showShare"
-         :info="place.info"
-     />
-   <dialog-form
-       :showDialog="show"
-       @close="closeDialogShare"
-       @share="(text)=>shared(text)"
-       :item="place"
-   />
+  <div>
+    <div v-if="place.design === 1">
+      <header-card
+          @share="showShare"
+          :info="place.info"
+      />
+      <card-place
+          v-for="item in place.places"
+          :item="item"
+          @showGallery="showGallary"
+      />
+      <share-block
+          @share="(text)=>shared(text)"
+          style="margin: 65px 0; padding: 25px;border-bottom: 1px solid #cccccc;border-top: 1px solid #cccccc;"
+          :item="place"
+      />
+    </div>
+    <div v-if="place.design === 2"
+         style="">
+      <NewHeaderCard
+          @share="showShare"
+          :info="place.info"
+      />
+           <NewCardPlace
+               v-for="(item, ind) in place.places"
+               :key="ind"
+               :index="ind"
+               :item="item"
+               @showGallery="showGallary"
+           />
+           <NewShareBlock
+               @share="(text)=>shared(text)"
 
- </div>
+               :item="place"
+           />
+      <!--     <dialog-share-->
+      <!--         :showDialog="show"-->
+      <!--         @close="closeDialogShare"-->
+      <!--         @share="(text)=>shared(text)"-->
+      <!--         :item="place"-->
+      <!--     />-->
+      <!--     <dialog-gallery-->
+      <!--         :item="itemGallery"-->
+      <!--         :showDialog="showGallery"-->
+      <!--         @close="closeGallery"-->
+      <!--     />-->
+    </div>
+
+    <dialog-form
+        :showDialog="show"
+        @close="closeDialogShare"
+        @share="(text)=>shared(text)"
+        :item="place"
+    />
+    <dialog-gallery
+        :item="itemGallery"
+        :showDialog="showGallery"
+        @close="closeGallery"
+    />
+
+
+  </div>
 
 </template>
 
 <script lang="ts" setup>
 
-// import DialogForm from "#build/components/Dialog.vue";
 
 
-
-import {env} from "unenv";
 
 definePageMeta({
   layout: 'empty'
 })
 
-import {useRoute, useRouter, useRuntimeConfig} from "nuxt/app";
+import {useRoute, useRouter, useRuntimeConfig, useSeoMeta} from "nuxt/app";
 import {computed} from "@vue/reactivity";
-import {HeaderCard,DialogForm} from "#components"
+import {CardPlace, DialogForm,NewShareBlock, HeaderCard, NewHeaderCard,NewCardPlace} from "#components"
 
-// const Url_base =  window.location.protocol +'//'+ window.location.host+'/';
 
 const config = useRuntimeConfig()
 const route = useRoute()
 const { currentRoute } = useRouter();
 
-// const Url_base = config.base_url
 const Url_base = 'https://inkstagram.ru'
 
 
@@ -547,78 +591,60 @@ let place: any = computed(() => {
 })
 const share_text = place.value.info.share_text
 
-const image_url = Url_base + '/images/' + place.value.info.image;
-const page_url = Url_base + route.fullPath;
+const image_url: string = Url_base + '/images/' + place.value.info.image;
+const page_url: string = Url_base + route.fullPath;
 
-useHead(
-    computed(() => {
-      return {
-        title: place.value.info.title,
-        meta: [
-          {
-            property: 'description',
-            content: place.value.info.share_text,
-          },
-          {
-            property: 'og:title',
-            content: place.value.info.title,
-          },
-          {
-            property: 'og:description',
-            content: place.value.info.share_text,
-          },
-          {
-            property: 'og:image',
-            content: image_url,
-          },
-          {
-            property: 'og:image:width',
-            content:256,
-          },
-          {
-            property: 'og:image:height',
-            content:256,
-          },
-          {
-            property: 'og:url',
-            content: page_url,
-          },
-          {
-            property: 'og:type',
-            content: 'article',
-          },
-          {
-            name: 'twitter:card',
-            content: 'summary',
-          },
-          {
-            name: 'twitter:title',
-            content: place.value.info.title,
-          },
-          {
-            name: 'twitter:description',
-            content: share_text,
-          },
-          {
-            name: 'twitter:image',
-            content: image_url,
-          },
-          {
-            name: 'twitter:url',
-            content: page_url,
-          },
-
-        ]
-      }
-    })
-)
+useSeoMeta({
+  title: place.value.info.title,
+  description: place.value.info.share_text,
+  ogTitle: place.value.info.title,
+  ogDescription: place.value.info.share_text,
+  ogImage: image_url,
+  ogUrl: page_url,
+  ogType: 'article',
+  twitterCard: 'summary',
+  twitterTitle: place.value.info.title,
+  twitterDescription: share_text,
+  twitterImage: image_url
+})
+//
+// useHead(
+//     computed(() => {
+//       return {
+//         title: place.value.info.title,
+//         meta: [
+//
+//           {
+//             name: 'twitter:card',
+//             content: 'summary',
+//           },
+//           {
+//             name: 'twitter:title',
+//             content: place.value.info.title,
+//           },
+//           {
+//             name: 'twitter:description',
+//             content: share_text,
+//           },
+//           {
+//             name: 'twitter:image',
+//             content: image_url,
+//           },
+//           {
+//             name: 'twitter:url',
+//             content: page_url,
+//           },
+//
+//         ]
+//       }
+//     })
+// )
 const itemGallery = ref({})
 const show = ref(false)
 const showGallery = ref(false)
 const scrollY = ref(0)
 
 function showShare() {
-  alert(1)
   show.value = true
   stopScroll()
 }
@@ -637,10 +663,9 @@ function closeGallery(){
   startScroll()
   showGallery.value=false
 }
-function stopScroll(){
-  scrollY.value = window.scrollY
-
-  document.body.style.position = 'fixed';
+function stopScroll() {
+  // scrollY.value = window.scrollY
+  // document.body.style.position = 'fixed';
 }
 
 function startScroll(){
@@ -657,7 +682,7 @@ async function shared(text: string) {
   console.log(text)
   changeShareText(text)
 
-  const blob = await fetch(Url_base + 'images/' + place.value.info.image).then(res => res.blob());
+  // const blob = await fetch(Url_base + 'images/' + place.value.info.image).then(res => res.blob());
 
   const title = place.value.info.title.length < 65 ? place.value.info.title : place.value.info.title.slice(0, 60) + '...';
   const share_text = place.value.info.share_text.length < 155 ? place.value.info.share_text : place.value.info.share_text.slice(0, 150) + '...';

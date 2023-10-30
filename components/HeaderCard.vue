@@ -36,14 +36,14 @@
     >
 <!--      :style="{backgroundImage:`url('/images/1.png)`}"-->
     </div>
-    <div class="header-card__date" @click="share">
+    <div class="header-card__date">
       {{ info.subtitle }}
     </div>
     <div style="position: relative">
       <div class="header-card__title">
         {{ info.title }}
         <div class="header-card__share">
-          <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg"  @click="share">
             <rect width="54" height="54" rx="27" fill="#4F4946" fill-opacity="0.05"/>
             <circle cx="27" cy="27" r="26.5" stroke="#4F4946" stroke-opacity="0.15"/>
             <path
@@ -65,20 +65,14 @@
 import {defineEmits, defineProps} from "vue";
 import {useRouter} from "nuxt/app";
 
-// import router from "../router";
 const router = useRouter()
-
-
-
 const emit = defineEmits(['share'])
-
 function share():void {
-  console.log(1)
   emit('share')
 }
 
 function goHome(){
-  router.push({name:'Home'})
+  router.push({path:'/'})
 }
 const props = defineProps({
   'info': {
@@ -98,7 +92,7 @@ const imgP = `images/${props['info'].image}`;
 
 <style scoped lang="scss">
 .header-card {
-  font-family: LibreBaskervilleRegular, sans-serif;
+  font-family: 'Libre Baskerville', serif;
   position: relative;
 
   &__date {
@@ -115,7 +109,7 @@ const imgP = `images/${props['info'].image}`;
   }
 
   &__title {
-    font-family: LibreBaskervilleBold, sans-serif;
+    font-family: 'Libre Baskerville', serif;
     padding: 0 10px;
     color: #4F4946;
     width: 250px;
@@ -140,10 +134,13 @@ const imgP = `images/${props['info'].image}`;
     position: absolute;
     top: 20px;
     left: 20px;
+    :hover{
+      cursor: pointer;
+    }
   }
 
   &__text {
-    font-family: LibreCaslonRegular, sans-serif;
+    font-family: 'Libre Baskerville', serif;
     padding: 0 10px;
     color: #4F4946;
     font-size: 16px;
